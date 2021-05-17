@@ -1,20 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
+import { connect } from "react-redux";
 import Card from "../card/card.component";
 
-import useFetchArrayWithUrl from "../../effects/use-fetch.effect";
+import { searchUser } from "../../redux/user/user.actions";
+import UserCard from "../user-card/user-card.component";
 
-const User = ({ userId }) => {
-  const user = useFetchArrayWithUrl(
-    `https://jsonplaceholder.typicode.com/users?id=${userId}`
-  );
-
+const User = ({ currentUser, searchUser }) => {
   return (
     <Card>
-      {user ? (
-        <div>
-          <h3>{user.username}</h3>
-          <p>{user.name}</p>
-        </div>
+      <input
+        type="search"
+        onChange={(event) => {
+          searchUser(event.target.value);
+        }}
+      />
+      {currentUser ? (
+        currentUser.map((user) => <UserCard currentUser={user} key={user.id} />)
       ) : (
         <p>No user found</p>
       )}
@@ -22,4 +23,12 @@ const User = ({ userId }) => {
   );
 };
 
-export default User;
+const mapStateToProps = (state) => ({
+  currentUser: state.userReducer.currentUser,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  searchUser: (queryString) => dispatch(searchUser(queryString)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(User);

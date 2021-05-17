@@ -1,14 +1,15 @@
-import "./App.css";
-import Post from "./components/post/post.component";
-import User from "./components/user/user.component";
+import React from "react";
 
-function App() {
+import UseReducerExample from "./components/use-reducer-example/use-reducer-example.component";
+
+import "./App.css";
+
+const App = (props) => {
   return (
     <div className="App">
-      <User userId={5} />
-      <Post postId={5} />
+      <UseReducerExample />
     </div>
   );
-}
+};
 
 export default App;
